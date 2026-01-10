@@ -11,6 +11,26 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-task_manager}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: task_manager_api
+    restart: unless-stopped
+    environment:
+      API_PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/task_manager?schema=public
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:

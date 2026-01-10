@@ -21,3 +21,6 @@ coverage
 .DS_Store
 .idea
 .vscode
+
+# prisma config
+backend/prisma.config.*
