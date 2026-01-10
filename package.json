@@ -1,14 +1,21 @@
 {
   "name": "task-manager",
   "private": true,
-  "workspaces": ["frontend", "backend"],
-  "scripts": {
-    "dev": "yarn workspaces foreach -pt run dev",
-    "test": "yarn workspaces foreach -pt run test",
-    "lint": "yarn workspaces foreach -pt run lint",
-    "db:up": "docker compose up -d",
-    "db:down": "docker compose down",
-    "db:psql": "docker exec -it task_manager_db psql -U postgres -d task_manager",
-    "db:reset": "prisma migrate reset --schema backend/prisma/schema.prisma"
-  }
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+"scripts": {
+  "dev": "yarn dev:backend & yarn dev:frontend",
+  "dev:backend": "yarn workspace backend start:dev",
+  "dev:frontend": "yarn workspace frontend dev",
+  "test": "yarn workspace backend test",
+  "lint": "yarn workspace backend lint",
+  "db:up": "docker compose up -d db",
+  "db:down": "docker compose down",
+  "db:psql": "docker exec -it task_manager_db psql -U postgres -d task_manager",
+  "db:reset": "prisma migrate reset --schema backend/prisma/schema.prisma",
+  "db:migrate": "prisma migrate deploy --schema backend/prisma/schema.prisma"
+},
+  "packageManager": "yarn@4.12.0"
 }
