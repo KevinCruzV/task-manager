@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 jest.mock('../generated/prisma/client', () => {
   class PrismaClient {
     $connect = jest.fn();

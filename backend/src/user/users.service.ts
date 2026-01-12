@@ -11,4 +11,10 @@ export class UsersService {
       where: { email },
     });
   }
+
+  create(email: string, password: string): Promise<User> {
+    return this.prisma.user.create({
+      data: { email, password },
+    });
+  }
 }
