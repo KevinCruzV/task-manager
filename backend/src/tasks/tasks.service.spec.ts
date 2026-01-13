@@ -12,7 +12,10 @@ describe('TasksService', () => {
       findFirst: jest.fn(),
       updateMany: jest.fn(),
       deleteMany: jest.fn(),
+      findMany: jest.fn(),
+      count: jest.fn(),
     },
+    $transaction: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -125,6 +128,74 @@ describe('TasksService', () => {
 
     await expect(service.delete('u2', 't1')).rejects.toBeInstanceOf(
       NotFoundException,
+    );
+  });
+
+  it('default: page=1 limit=10 sort createdAt desc', async () => {
+    prismaMock.$transaction.mockResolvedValueOnce([0, []]);
+
+    await service.findAll('user-1', {});
+
+    expect(prismaMock.task.count).toHaveBeenCalledWith({
+      where: { userId: 'user-1' },
+    });
+
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith({
+      where: { userId: 'user-1' },
+      orderBy: { createdAt: 'desc' },
+      skip: 0,
+      take: 10,
+    });
+
+    expect(prismaMock.$transaction).toHaveBeenCalledTimes(1);
+  });
+
+  it('filter completed=true', async () => {
+    prismaMock.$transaction.mockResolvedValueOnce([0, []]);
+
+    await service.findAll('user-1', { completed: true });
+
+    expect(prismaMock.task.count).toHaveBeenCalledWith({
+      where: { userId: 'user-1', completed: true },
+    });
+
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { userId: 'user-1', completed: true },
+      }),
+    );
+  });
+
+  it('search q => OR title/description contains insensitive', async () => {
+    prismaMock.$transaction.mockResolvedValueOnce([0, []]);
+
+    await service.findAll('user-1', { q: 'hello' });
+
+    const expectedWhere = {
+      userId: 'user-1',
+      OR: [
+        { title: { contains: 'hello', mode: 'insensitive' } },
+        { description: { contains: 'hello', mode: 'insensitive' } },
+      ],
+    };
+
+    expect(prismaMock.task.count).toHaveBeenCalledWith({
+      where: expectedWhere,
+    });
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: expectedWhere }),
+    );
+  });
+
+  it('sorting: sortBy=completed order=asc', async () => {
+    prismaMock.$transaction.mockResolvedValueOnce([0, []]);
+
+    await service.findAll('user-1', { sortBy: 'completed', order: 'asc' });
+
+    expect(prismaMock.task.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orderBy: { completed: 'asc' },
+      }),
     );
   });
 });

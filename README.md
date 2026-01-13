@@ -42,6 +42,7 @@ Make sure the following tools are installed:
 
 ```bash
 cp .env.example .env
+cp .env.example backend/.env
 ```
 
 Default values are compatible with the Docker setup.
@@ -77,7 +78,19 @@ yarn
 
 ---
 
-## Step 3 — Start frontend and backend
+## Step 3 — Seed DB
+
+From the project root:
+
+```bash
+yarn workspace backend prisma generate
+yarn workspace backend prisma migrate dev
+yarn workspace backend prisma db seed
+```
+
+---
+
+## Step 4 — Start frontend and backend
 
 From the project root:
 

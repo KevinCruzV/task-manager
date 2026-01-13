@@ -18,16 +18,55 @@ async function main() {
     create: {
       email: 'demo@test.com',
       password,
-      tasks: {
-        create: [
-          { title: 'First task', completed: false },
-          { title: 'Completed task', completed: true },
-        ],
-      },
     },
   });
 
   console.log('Seeded user:', user.email);
+
+  await prisma.task.deleteMany({ where: { userId: user.id } });
+
+  await prisma.task.createMany({
+    data: [
+      {
+        userId: user.id,
+        title: 'Task #1',
+        description: 'For pagination',
+        completed: false,
+      },
+      {
+        userId: user.id,
+        title: 'Task #2',
+        description: null,
+        completed: false,
+      },
+      {
+        userId: user.id,
+        title: 'Task #3',
+        description: 'search: meeting',
+        completed: false,
+      },
+      {
+        userId: user.id,
+        title: 'Task #4',
+        description: null,
+        completed: true,
+      },
+      {
+        userId: user.id,
+        title: 'Task #5',
+        description: 'search: home',
+        completed: true,
+      },
+      {
+        userId: user.id,
+        title: 'Task #6',
+        description: null,
+        completed: false,
+      },
+    ],
+  });
+
+  console.log('Tasks seeded');
 }
 
 main()
