@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../user/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { ConflictException } from '@nestjs/common'; 
+import { ConflictException } from '@nestjs/common';
 
 type UsersServiceMock = {
   findByEmail: jest.Mock;
@@ -75,8 +75,8 @@ describe('Auth', () => {
       password: await bcrypt.hash('good', 10),
     });
 
-    await expect(service.register('test@test.com', 'good')).rejects.toBeInstanceOf(
-      ConflictException,
-    );
+    await expect(
+      service.register('test@test.com', 'good'),
+    ).rejects.toBeInstanceOf(ConflictException);
   });
 });
