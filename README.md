@@ -40,9 +40,15 @@ Make sure the following tools are installed:
 
 ## Copy environment variables
 
+### Backend
+Copy the example file and adjust values if needed:
 ```bash
-cp .env.example .env
-cp .env.example backend/.env
+cp backend/.env.example backend/.env
+```
+### Frontend
+Copy the example file and adjust values if needed:
+```bash
+cp frontend/.env.example frontend/.env
 ```
 
 Default values are compatible with the Docker setup.
@@ -207,3 +213,5 @@ yarn db:migrate
 # Improvements
 
 - Containerized frontend
+- Use cookie session instead of localStorage
+- Not rebuild Api image each time

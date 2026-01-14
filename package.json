@@ -13,6 +13,7 @@
     "test:frontend": "yarn workspace frontend test:run",
     "lint": "yarn workspace backend lint",
     "format:backend": "yarn workspace backend format",
+    "format:frontend": "yarn workspace frontend format",
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",
     "db:psql": "docker exec -it task_manager_db psql -U postgres -d task_manager",
