@@ -42,7 +42,7 @@ Make sure the following tools are installed:
 
 ```bash
 cp .env.example .env
-cp backend/.env.example backend/.env
+cp .env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
