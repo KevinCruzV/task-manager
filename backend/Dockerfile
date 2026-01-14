@@ -2,15 +2,23 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-COPY backend/package.json backend/package.json
+RUN corepack enable && corepack prepare yarn@4.12.0 --activate
 
-RUN yarn install --frozen-lockfile
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+COPY backend/package.json backend/package.json
+COPY frontend/package.json frontend/package.json
+
+RUN yarn workspaces focus ./backend -A
 
 # build
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+RUN corepack enable && corepack prepare yarn@4.12.0 --activate
+
+COPY --from=deps /app /app
 COPY . .
 WORKDIR /app/backend
 
@@ -23,11 +31,15 @@ RUN ls -la dist && test -f dist/src/main.js
 # runner
 FROM node:20-alpine AS runner
 WORKDIR /app
+
+RUN corepack enable && corepack prepare yarn@4.12.0 --activate
+
 ENV NODE_ENV=production
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/backend ./backend
+COPY --from=build /app /app
+
 WORKDIR /app/backend
 
 EXPOSE 3000
 
+WORKDIR /app/backend
 CMD ["sh", "-c", "yarn prisma migrate deploy --schema=prisma/schema.prisma && node dist/src/main.js"]

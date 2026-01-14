@@ -84,9 +84,9 @@ yarn
 From the project root:
 
 ```bash
-yarn workspace backend prisma generate
-yarn workspace backend prisma migrate dev
-yarn workspace backend prisma db seed
+yarn workspace @task-manager/backend prisma generate
+yarn workspace @task-manager/backend prisma migrate dev
+yarn workspace @task-manager/backend prisma db seed
 ```
 
 ---

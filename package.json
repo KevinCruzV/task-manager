@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "dev": "yarn dev:backend & yarn dev:frontend",
-    "dev:backend": "yarn workspace backend start:dev",
-    "dev:frontend": "yarn workspace frontend dev",
+    "dev:backend": "yarn workspace @task-manager/backend start:dev",
+    "dev:frontend": "yarn workspace @task-manager/frontend dev",
     "test:backend": "yarn workspace backend test",
     "test:frontend": "yarn workspace frontend test:run",
     "lint": "yarn workspace backend lint",

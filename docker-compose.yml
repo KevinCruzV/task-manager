@@ -23,6 +23,8 @@ services:
       dockerfile: backend/Dockerfile
     container_name: task_manager_api
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       API_PORT: 3000
       DATABASE_URL: postgresql://postgres:postgres@db:5432/task_manager?schema=public
