@@ -89,15 +89,15 @@ export function AuthForm({mode, onSubmit}: AuthFormProps) {
         <button
           type="submit"
           disabled={!isValid || loading}
-          className="inline-flex w-full items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/10 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading
             ? isRegister
-              ? 'Creating account…'
-              : 'Signing in…'
+              ? "Creating account…"
+              : "Signing in…"
             : isRegister
-              ? 'Create account'
-              : 'Sign in'}
+              ? "Create account"
+              : "Sign in"}
         </button>
       </form>
     </>

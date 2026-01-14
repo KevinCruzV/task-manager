@@ -29,7 +29,7 @@ The project is designed with **two execution modes**:
 
 Make sure the following tools are installed:
 
-- Node.js (v18 or higher)
+- Node.js (v20 or higher)
 - Yarn
 - Docker
 - Docker Compose
@@ -40,14 +40,9 @@ Make sure the following tools are installed:
 
 ## Copy environment variables
 
-### Backend
-Copy the example file and adjust values if needed:
 ```bash
+cp .env.example .env
 cp backend/.env.example backend/.env
-```
-### Frontend
-Copy the example file and adjust values if needed:
-```bash
 cp frontend/.env.example frontend/.env
 ```
 
@@ -110,6 +105,8 @@ This command starts:
 
 ---
 
+
+
 ## Services URLs (Development Mode)
 
 - Frontend: http://localhost:5173
@@ -154,6 +151,7 @@ docker compose down
 From the project root:
 
 ```bash
+yarn
 yarn dev:frontend
 ```
 
@@ -176,6 +174,16 @@ This command starts:
 - Database data is persisted using Docker volumes
 - Prisma is used as the ORM
 
+---
+
+# Test
+
+## Backend tests
+
+```bash
+cd backend
+yarn test
+```
 ---
 
 # Useful Commands
@@ -210,9 +218,23 @@ yarn dev
 yarn db:migrate
 ```
 
+---
+
+# Design decision
+
+- Backend stack (NestJS, Prisma, PostgreSQL, JWT authentication) was imposed by the technical test requirements.
+- The implementation follows best practices: modular architecture, DTO validation, type-safe queries and clear separation of concerns.
+- React + TypeScript (Vite) was chosen for the frontend to ensure fast development, strong typing and maintainable UI code.
+- Tokens are stored in Local Storage to keep the implementation straightforward for a technical test.
+- In production, HTTP-only cookies with refresh tokens would be preferred.
+- Dockerization is limited to the backend and database to provide a reproducible development environment without adding unnecessary complexity to the frontend setup.
+
+---
+
 # Improvements
 
 - Containerized frontend
-- Use cookie session instead of localStorage
+- Use cookie session instead of localStorage (Refresh tokens & token rotation)
 - Not rebuild Api image each time
 - Debounce for search
+- CI pipeline (GitHub Actions)
