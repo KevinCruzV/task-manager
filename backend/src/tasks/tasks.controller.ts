@@ -17,11 +17,13 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTasksQueryDto } from './dto/get-tasks.query.dto';
 import { TasksListResponseDto } from './dto/get-tasks.query.dto';
 import { TaskDto } from './dto/get-task.dto';
+import { Throttle } from '@nestjs/throttler';
 
 export type AuthRequest = Request & {
   user: { userId: string; email: string };
 };
 
+@Throttle({ default: { limit: 5, ttl: 60 } })
 @UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
