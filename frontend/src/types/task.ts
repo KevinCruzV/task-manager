@@ -54,3 +54,18 @@ export type PaginationProps = {
   onPrev: () => void;
   onNext: () => void;
 };
+
+export type CreateTaskBody = {
+  title: string;
+  description?: string | null;
+};
+
+export type UpdateTaskBody = Partial<{
+  title: string;
+  description: string | null;
+  completed: boolean;
+}>;
+
+export type CreateTaskProps = {
+  onCreated: () => void;
+};

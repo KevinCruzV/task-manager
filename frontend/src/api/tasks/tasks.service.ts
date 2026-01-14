@@ -1,5 +1,5 @@
 import { apiFetch } from "../client";
-import type { TasksQuery, TasksListResponse } from "../../types/task";
+import type { TasksQuery, TasksListResponse, Task, CreateTaskBody, UpdateTaskBody } from "../../types/task";
 
 export async function getTasks(params: TasksQuery): Promise<TasksListResponse> {
     const searchParams = new URLSearchParams();
@@ -16,4 +16,24 @@ export async function getTasks(params: TasksQuery): Promise<TasksListResponse> {
     if (params.order) searchParams.set("order", params.order);
 
     return apiFetch<TasksListResponse>(`/tasks?${searchParams.toString()}`);
+}
+
+export async function createTask(body: CreateTaskBody): Promise<Task> {
+  return apiFetch<Task>(`/tasks`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function updateTask(id: string, body: UpdateTaskBody): Promise<Task> {
+  return apiFetch<Task>(`/tasks/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function deleteTask(id: string): Promise<void> {
+  await apiFetch<void>(`/tasks/${id}`, {
+    method: "DELETE",
+  });
 }
