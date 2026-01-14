@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { isAuthenticated } from "../../auth/auth.store";
+import { isAuthenticated } from "../../api/auth/auth.store";
 
 export function AuthGuard() {
     const location = useLocation();

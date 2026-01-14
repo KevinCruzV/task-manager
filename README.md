@@ -215,3 +215,4 @@ yarn db:migrate
 - Containerized frontend
 - Use cookie session instead of localStorage
 - Not rebuild Api image each time
+- Debounce for search

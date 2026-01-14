@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { isAuthenticated } from "./auth/auth.store";
+import { isAuthenticated } from "./api/auth/auth.store";
 import { AuthGuard } from "./components/auth/AuthGuard";
-import { LoginPage } from "./pages/LoginPage";
-import { RegisterPage } from "./pages/RegisterPage"; 
+import { LoginPage } from "./pages/auth/LoginPage";
+import { RegisterPage } from "./pages/auth/RegisterPage"; 
 import { TasksPage } from "./pages/TasksPage";
 
 export const router = createBrowserRouter([

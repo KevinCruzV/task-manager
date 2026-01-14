@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { clearToken } from '../auth/auth.store';
+import { clearToken } from '../api/auth/auth.store';
 
 export function TasksPage() {
   const navigate = useNavigate();

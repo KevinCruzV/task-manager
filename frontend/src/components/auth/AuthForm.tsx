@@ -28,12 +28,8 @@ export function AuthForm({mode, onSubmit}: AuthFormProps) {
       try {
         setLoading(true);
         await onSubmit({ email: email.trim(), password });
-      } catch (err: any) {
-        if (Array.isArray(err?.messages) && err.messages.length) {
-            setError(err.messages.join('\n'));
-        } else {
-            setError(err?.message ?? 'Something went wrong');
-        }
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Something went wrong');
       } finally {
         setLoading(false);
       }

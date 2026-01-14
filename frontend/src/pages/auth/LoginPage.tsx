@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AuthLayout } from '../components/auth/AuthLayout';
-import { AuthForm } from '../components/auth/AuthForm';
-import { login } from '../auth/auth.service';
-import { setToken } from '../auth/auth.store';
+import { AuthLayout } from '../../components/auth/AuthLayout';
+import { AuthForm } from '../../components/auth/AuthForm';
+import { login } from '../../api/auth/auth.service';
+import { setToken } from '../../api/auth/auth.store';
 
 type LocationState = { from?: string };
 

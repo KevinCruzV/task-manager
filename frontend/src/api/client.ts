@@ -7,7 +7,7 @@ async function parseError(res: Response): Promise<ApiError> {
     try {
         const data = await res.json();
         if (typeof data?.message === 'string') message = data.message;
-        if (Array.isArray(data?.message)) message = data.message.join('');
+        if (Array.isArray(data?.message)) message = data.message.join('\n');
     } catch {
         // ignore JSON parse errors
     }
@@ -31,7 +31,8 @@ export async function apiFetch<T>(
     });
 
     if (!res.ok) {
-        throw await parseError(res);
+        const err = await parseError(res);
+        throw new Error(err.message);
     }
 
     if (res.status === 204) return undefined as T;
