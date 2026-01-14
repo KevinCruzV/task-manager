@@ -23,7 +23,7 @@ export function LoginPage() {
         mode="login"
         onSubmit={async ({ email, password }) => {
           const res = await login(email, password);
-          setToken(res.accessToken);
+          setToken(res.access_token);
           navigate(from, { replace: true });
         }}
       />

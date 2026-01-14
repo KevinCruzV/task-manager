@@ -15,5 +15,5 @@ export async function getTasks(params: TasksQuery): Promise<TasksListResponse> {
 
     if (params.order) searchParams.set("order", params.order);
 
-    return apiFetch<TasksListResponse>(`/tasks.${searchParams.toString()}`);
+    return apiFetch<TasksListResponse>(`/tasks?${searchParams.toString()}`);
 }

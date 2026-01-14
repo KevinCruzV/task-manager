@@ -19,9 +19,16 @@ export type TasksQuery = {
   order?: TasksOrder;
 };
 
+export type TasksListMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 export type TasksListResponse = {
   items: Task[];
-  total: number;
+  meta: TasksListMeta;
 };
 
 export type CompletedFilter = "all" | "completed" | "pending";
@@ -39,4 +46,11 @@ export type TasksFiltersProps = {
   onOrderChange: (value: TasksOrder) => void;
   onLimitChange: (value: number) => void;
   onReset: () => void;
+};
+
+export type PaginationProps = {
+  page: number;
+  totalPages: number;
+  onPrev: () => void;
+  onNext: () => void;
 };

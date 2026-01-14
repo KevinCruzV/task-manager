@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export type AuthResponse = {
-  accessToken: string;
+  access_token: string;
 };
 
 export type AuthLayoutProps = { children: ReactNode };

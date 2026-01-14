@@ -18,7 +18,7 @@ export function RegisterPage() {
         mode="register"
         onSubmit={async ({ email, password }) => {
           const res = await register(email, password);
-          setToken(res.accessToken);
+          setToken(res.access_token);
           navigate('/tasks', { replace: true });
         }}
       />

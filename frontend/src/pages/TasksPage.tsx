@@ -1,42 +1,147 @@
-import { useNavigate } from 'react-router-dom';
-import { clearToken } from '../api/auth/auth.store';
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import { clearToken } from "../api/auth/auth.store";
+import { getTasks } from "../api/tasks/tasks.service";
+
+import type { CompletedFilter, Task, TasksOrder, TasksSortBy } from "../types/task";
+import TasksFilters from "../components/tasks/TasksFilters";
+import TasksList from "../components/tasks/TasksList";
+import Pagination from "../components/tasks/Pagination";
 
 export function TasksPage() {
   const navigate = useNavigate();
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [q, setQ] = useState("");
+  const [completed, setCompleted] = useState<CompletedFilter>("all");
+  const [sortBy, setSortBy] = useState<TasksSortBy>("createdAt");
+  const [order, setOrder] = useState<TasksOrder>("desc");
+  const [items, setItems] = useState<Task[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   function logout() {
     clearToken();
-    navigate('/login', { replace: true });
+    navigate("/login", { replace: true });
   }
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    const completedParam =
+      completed === "all" ? undefined : completed === "completed" ? true : false;
+
+    getTasks({
+      page,
+      limit,
+      q,
+      completed: completedParam,
+      sortBy,
+      order,
+    })
+      .then((res) => {
+        setItems(res.items);
+        setTotal(res.meta.total);
+        setTotalPages(res.meta.totalPages);
+
+        if (page > res.meta.totalPages) setPage(res.meta.totalPages);
+      })
+      .catch((e: unknown) => {
+        setError(e instanceof Error ? e.message : "Failed to load tasks");
+      })
+      .finally(() => setLoading(false));
+  }, [page, limit, q, completed, sortBy, order]);
 
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-4xl px-4 py-8">
+        {/* Header */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">Tasks</h1>
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900">Tasks</h1>
+            <p className="mt-1 text-sm text-slate-600">
+              {total} task{total > 1 ? "s" : ""} • page {page}/{totalPages}
+            </p>
+          </div>
+
           <button
             onClick={logout}
-            className="
-              rounded-lg
-              border border-slate-600
-              bg-slate-800
-              px-3 py-2
-              text-sm font-medium
-              text-slate-100
-              hover:bg-slate-700
-              hover:text-slate-100
-              focus:outline-none
-              focus:ring-0
-            "
+            className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 focus:outline-none"
           >
             Logout
           </button>
         </div>
 
-        <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-          <p className="text-slate-700">
-            ✅ Auth OK. see the next step
-          </p>
+        <div className="mt-6 space-y-4">
+          <TasksFilters
+            q={q}
+            completed={completed}
+            sortBy={sortBy}
+            order={order}
+            limit={limit}
+            onQChange={(value) => {
+              setPage(1);
+              setQ(value);
+            }}
+            onCompletedChange={(value) => {
+              setPage(1);
+              setCompleted(value);
+            }}
+            onSortByChange={(value) => {
+              setPage(1);
+              setSortBy(value);
+            }}
+            onOrderChange={(value) => {
+              setPage(1);
+              setOrder(value);
+            }}
+            onLimitChange={(value) => {
+              setPage(1);
+              setLimit(value);
+            }}
+            onReset={() => {
+              setPage(1);
+              setQ("");
+              setCompleted("all");
+              setSortBy("createdAt");
+              setOrder("desc");
+            }}
+          />
+
+          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+            {error && (
+              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
+            {loading && (
+              <div className="flex items-center gap-3 py-6 text-sm text-slate-600">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
+                Loading...
+              </div>
+            )}
+
+            {!loading && !error && items.length === 0 && (
+              <p className="text-sm text-slate-600">No tasks found.</p>
+            )}
+
+            {!loading && !error && items.length > 0 && <TasksList items={items} />}
+          </div>
+
+          {!loading && !error && items.length > 0 && (
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPrev={() => setPage((p) => Math.max(1, p - 1))}
+              onNext={() => setPage((p) => Math.min(totalPages, p + 1))}
+            />
+          )}
         </div>
       </div>
     </div>

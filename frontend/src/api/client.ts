@@ -1,5 +1,6 @@
 import { API_URL } from '../constants';
 import type { ApiError } from '../types/error';
+import { TOKEN_KEY } from '../constants';
 
 async function parseError(res: Response): Promise<ApiError> {
     let message = `HTTP ${res.status}`;
@@ -19,7 +20,8 @@ export async function apiFetch<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-    const token = localStorage.getItem('token');
+    const raw = localStorage.getItem(TOKEN_KEY);
+    const token = raw && raw !== "undefined" ? raw : null;
 
     const res = await fetch(`${API_URL}${path}`, {
         ...options,

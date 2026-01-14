@@ -1,17 +1,20 @@
 import { TOKEN_KEY } from "../../constants";
 
+export function setToken(accessToken: string) {
+  if (!accessToken || accessToken === "undefined") return;
+  localStorage.setItem(TOKEN_KEY, accessToken);
+}
+
 export function getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+  const raw = localStorage.getItem(TOKEN_KEY);
+  if (!raw || raw === "undefined") return null;
+  return raw;
 }
 
-export function setToken(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token);
-}
-
-export function clearToken(): void {
-    localStorage.removeItem(TOKEN_KEY);
+export function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 export function isAuthenticated(): boolean {
-    return Boolean(getToken());
+  return !!getToken();
 }
