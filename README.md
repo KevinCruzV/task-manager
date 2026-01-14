@@ -103,9 +103,11 @@ This command starts:
 - the frontend development server (Vite)
 - the backend API
 
+User seed :
+- demo@test.com
+- password123
+
 ---
-
-
 
 ## Services URLs (Development Mode)
 
@@ -135,6 +137,10 @@ This command will:
 - build the backend API Docker image
 - apply Prisma migrations automatically
 - start the NestJS API container
+
+User seed :
+- demo@test.com
+- password123
 
 ---
 
