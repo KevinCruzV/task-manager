@@ -182,6 +182,18 @@ This command starts:
 
 ---
 
+# Rate limiting
+
+Basic rate limiting is enabled to protect the API from abuse.
+
+- A global soft rate limit is applied to all endpoints
+- Task-related endpoints (`/tasks`) are rate limited
+- Authentication endpoints are intentionally excluded
+- When the limit is exceeded, the API returns HTTP 429 (Too Many Requests)
+
+
+---
+
 # Test
 
 ## Backend tests

@@ -42,4 +42,5 @@ WORKDIR /app/backend
 EXPOSE 3000
 
 WORKDIR /app/backend
-CMD ["sh", "-c", "yarn prisma migrate deploy --schema=prisma/schema.prisma && node dist/src/main.js"]
+CMD ["sh", "-c", "yarn prisma migrate deploy --schema=prisma/schema.prisma && yarn prisma db seed && node dist/src/main.js"]
+
